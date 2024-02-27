@@ -1,3 +1,7 @@
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.LinkedList;
+
 public class BalancedBrackets {
     /*
     A bracket is considered to be any one of the following characters: (, ), {, }, [, or ].
@@ -28,6 +32,42 @@ Constraints
 Output Format
 For each String, return YES or NO
      */
+
+
+    static String isBalanced(String s) {
+
+        //use stack to keep track of the brackets
+        Deque<Character> stack = new ArrayDeque<>();
+        //checks for opening brackets
+        for (char bracket : s.toCharArray()) {
+            if (bracket == '(' || bracket == '{' || bracket == '[') {
+                stack.addLast(bracket);
+            } else {
+                //if stack is empty then its not balanced
+                if (stack.isEmpty()) {
+                    return "NO";
+                }
+                //check that they match the ending bracket
+                char top = stack.removeLast();
+                //if a pair of brackets don't match, return no- not balanced
+                if ((bracket == ')' && top != '(') ||
+                        (bracket == '}' && top != '{') ||
+                        (bracket == ']' && top != '[')) {
+                    return "NO";
+                }
+            }
+        }
+        //if the remaining stack is empty then yes it was balanced, if no then wasn't balanced
+        return stack.isEmpty() ? "YES" : "NO";
+    }
+
+    public static void main(String[] args) {
+        // provided examples
+        System.out.println(isBalanced("{[()]}"));        // output: YES
+        System.out.println(isBalanced("{[(])}"));        // output: NO
+        System.out.println(isBalanced("{{[[(())]]}}"));  // output: YES
+    }
+
 
 
 }
